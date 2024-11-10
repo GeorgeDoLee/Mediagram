@@ -3,6 +3,7 @@ import MainLayout from '../components/MainLayout'
 import PublisherManager from '../components/PublisherManager'
 import Articles from '../components/Articles'
 import { Link } from 'react-router-dom';
+import CategoriesManager from '../components/CategoriesManager';
 
 const AdminPage = () => {
 
@@ -13,7 +14,12 @@ const AdminPage = () => {
             <div className='flex gap-2'>
               <Link to="/admin/publisher" className='self-start px-4 py-2 text-base border border-dark text-dark'>მედიის დამატება</Link>
               <Link to="/admin/article" className='self-start px-4 py-2 text-base border border-dark text-dark'>სტატიის დამატება</Link>
+              <Link to="/admin/category" className='self-start px-4 py-2 text-base border border-dark text-dark'>კატეგორიის დამატება</Link>
             </div>
+
+            <div className='border-b border-dark'></div>
+              
+            <CategoriesManager />
 
             <div className='border-b border-dark'></div>
             

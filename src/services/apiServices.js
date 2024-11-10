@@ -1,5 +1,6 @@
 const PUBLISHER_URL = 'https://localhost:7040/api/Publisher'
 const ARTICLE_URL = 'https://localhost:7040/api/Article'
+const CATEGORY_URL = 'https://localhost:7040/api/Category'
 
 export const postPublisher = async (data) => {
     try {
@@ -93,4 +94,58 @@ export const deleteArticle = async (id) => {
     }
 };
 
+export const postCategory = async (data) => {
+    try {
+        const response = await fetch(CATEGORY_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: data.name }),
+        });
 
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const putCategory = async (id, data) => {
+    try {
+        const response = await fetch(`${CATEGORY_URL}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: data.name }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteCategory = async (id) => {
+    try {
+        const response = await fetch(`${CATEGORY_URL}/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};

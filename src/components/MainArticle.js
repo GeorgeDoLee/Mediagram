@@ -26,19 +26,20 @@ const MainArticle = ({id = 'c3e68ea1-f4c7-43e3-a244-fbfdbb715e88'}) => {
                             style={{ width: `${mainArticle.oppCoverage}%` }}
                             className='bg-opp flex justify-center items-center text-white lg:text-base text-[7px] lg:font-semibold'
                         >
-                            ოპოზიციური {mainArticle.oppCoverage}%
+                            {mainArticle.oppCoverage < 10 ? '' : mainArticle.oppCoverage < 30 ? mainArticle.oppCoverage + '%' : 'ოპოზიციური ' + mainArticle.oppCoverage + '%' }
+                            
                         </div>
                         <div 
                             style={{ width: `${mainArticle.centerCoverage}%` }}
                             className='bg-center flex justify-center items-center text-dark lg:text-base text-[7px] lg:font-semibold'
                         >
-                            ცენტრისტული {mainArticle.centerCoverage}%
+                            {mainArticle.centerCoverage < 10 ? '' : mainArticle.centerCoverage < 30 ? mainArticle.centerCoverage + '%' : 'ცენტრისტული ' + mainArticle.centerCoverage + '%' }
                         </div>
                         <div 
                             style={{ width: `${mainArticle.govCoverage}%` }}
                             className='bg-gov flex justify-center items-center text-white lg:text-base text-[7px] lg:font-semibold'
                         >
-                            სამთავრობო {mainArticle.govCoverage}%
+                            {mainArticle.govCoverage < 10 ? '' : mainArticle.govCoverage < 30 ? mainArticle.govCoverage + '%' : 'სამთავრობო ' + mainArticle.govCoverage + '%' }
                         </div>
                     </div>
                 </div>

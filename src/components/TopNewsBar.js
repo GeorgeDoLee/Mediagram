@@ -12,19 +12,31 @@ const TopNewsBar = () => {
         {error && <p>{error}</p>}
         {isLoading && <p>Loading...</p>}
         <div className='flex flex-col gap-5 text-dark font-firago'>
-            {articles && articles.slice(0, 5).map((article, index) => (
-                <div key={index} >
-                    <h1 className='text-sm line-clamp-3 case-on'>{article.title}</h1>
-                    <div className='flex items-center gap-2 mt-1'>
-                        <div className='flex w-1/4 h-2'>
-                            <div className='w-[32%] h-full bg-red-800' />
-                            <div className='w-[25%] h-full bg-dark bg-opacity-50' />
-                            <div className='w-[43%] h-full bg-blue-800' />
+            {articles && articles.slice(0, 5).map((article, index) => {
+                const { govCoverage, centerCoverage, oppCoverage } = article;
+                let mostCoverage = { percentage: 0, position: ''};
+
+                if (govCoverage >= centerCoverage && govCoverage >= oppCoverage) {
+                    mostCoverage = { percentage: govCoverage, position: 'სამთავრობო' };
+                } else if (oppCoverage >= centerCoverage && oppCoverage >= govCoverage) {
+                    mostCoverage = { percentage: oppCoverage, position: 'ოპოზიციური' };
+                } else {
+                    mostCoverage = { percentage: centerCoverage, position: 'ცენტრისტული' };
+                }
+                return (
+                    <div key={index} >
+                        <h1 className='text-sm line-clamp-3 case-on'>{article.title}</h1>
+                        <div className='flex items-center gap-2 mt-1'>
+                            <div className='flex w-1/4 h-2'>
+                                <div style={{ width: `${article.oppCoverage}%` }} className="h-full bg-opp" />
+                                <div style={{ width: `${article.centerCoverage}%` }} className="h-full bg-center" />
+                                <div style={{ width: `${article.govCoverage}%` }} className="h-full bg-gov" />
+                            </div>
+                            <p className='text-xs'>{mostCoverage.percentage}% {mostCoverage.position} წყარო</p>
                         </div>
-                        <p className='text-xs'>43% ოპოზიციური წყარო</p>
                     </div>
-                </div>
-            ))}
+                )
+            })}
 
         </div>
     </section>

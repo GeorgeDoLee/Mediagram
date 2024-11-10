@@ -14,6 +14,7 @@ import ErrorPage from './pages/ErrorPage';
 import AdminPage from './pages/AdminPage';
 import UploadPublisherPage from './pages/UploadPublisherPage';
 import UploadArticlePage from './pages/UploadArticlePage';
+import UploadCategoryPage from './pages/UploadCategoryPage';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
   {
     path: '/admin/publisher/:id',
     element: <UploadPublisherPage />
+  },
+  {
+    path: '/admin/category',
+    element: <UploadCategoryPage />
+  },
+  {
+    path: '/admin/category/:id',
+    element: <UploadCategoryPage />
   },
   {
     path: '/admin/article',
