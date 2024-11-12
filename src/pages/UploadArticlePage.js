@@ -8,13 +8,17 @@ import { useNavigate } from 'react-router-dom';
 
 const UploadArticlePage = () => {
     const navigate = useNavigate();
-    const { data: publishers, isLoading, error } = useFetch('https://localhost:7040/api/Publisher');
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const { data: publishers, isLoading: publishersLoading, error: publishersError } = useFetch('https://localhost:7040/api/Publisher');
+    const { data: categories, isLoading: categoriesLoading, error: categoriesError } = useFetch('https://localhost:7040/api/Category');
+
+    const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
         defaultValues: {
             title: '',
+            categoryId: '',
             publisherUrls: [{ publisherId: '', url: '' }],
         },
     });
+    
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'publisherUrls',
@@ -32,23 +36,23 @@ const UploadArticlePage = () => {
                 acc[publisherId] = url;
                 return acc;
             }, {});
-    
+
             const articleData = {
                 title: data.title,
+                categoryId: data.categoryId,
                 publisherUrls,
                 photo: null,
             };
-    
+
             await postArticle(articleData);
             toast.success('სტატია აიტვირთა წარმატებით');
             setTimeout(() => {
-                navigate('/admin')
+                navigate('/admin');
             }, 1000);
         } catch (error) {
             toast.error(error.message);
         }
     };
-    
 
     return (
         <MainLayout>
@@ -62,6 +66,18 @@ const UploadArticlePage = () => {
                             className={`w-full bg-transparent p-2 border border-dark outline-none ${errors.title ? 'border-red-500' : ''}`}
                         />
                         {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
+                    </div>
+                    <div>
+                        <select
+                            {...register('categoryId', { required: 'აირჩიეთ კატეგორია' })}
+                            className="w-full p-2 bg-transparent border border-dark"
+                        >
+                            <option value="" disabled>აირჩიეთ კატეგორია</option>
+                            {categories && categories.map(category => (
+                                <option key={category.id} value={category.id}>{category.name}</option>
+                            ))}
+                        </select>
+                        {errors.categoryId && <p className="text-sm text-red-500">{errors.categoryId.message}</p>}
                     </div>
                     <div className="flex flex-col gap-3">
                         {fields.map((item, index) => (

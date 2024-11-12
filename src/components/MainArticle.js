@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useFetch from '../hooks/useFetch'
 
-const MainArticle = ({id = 'c3e68ea1-f4c7-43e3-a244-fbfdbb715e88'}) => {
+const MainArticle = ({id = '02c9c6a8-e359-4c65-8937-e3bd1b30064a'}) => {
     const {data: mainArticle, isLoading, error} = useFetch(`https://localhost:7040/api/Article/${id}`);
 
   return (

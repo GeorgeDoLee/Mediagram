@@ -55,7 +55,7 @@ const UploadCategoryPage = () => {
                         />
                         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
                     </div>
-                    <button type="submit" className="p-2 text-newspaper bg-dark">Submit</button>
+                    <button type="submit" className="p-2 text-newspaper bg-dark">ატვირთვა</button>
                 </form>
             </section>
         </MainLayout>
