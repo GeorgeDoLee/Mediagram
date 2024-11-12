@@ -1,8 +1,41 @@
 import React from 'react'
 import useFetch from '../hooks/useFetch'
+import useCoverageCalculator from '../hooks/useCoverageCalculator';
+
+const BlindspotArticle = ({article}) => {
+    const mostCoverage = useCoverageCalculator(article)
+
+    return (
+        <div 
+            key={article.id} 
+            className='p-2 rounded-lg' 
+        >
+            {article.photo ? 
+                <img src={article.photo} alt={article.title}
+                    className='w-full h-[150px] object-cover'
+                />
+                :
+                <div className='w-full h-[150px] bg-dark rounded-t-md bg-opacity-80' />
+            }
+            <div className='p-2 rounded-b-md bg-newspaper'>
+                <h1 className='text-sm font-semibold line-clamp-3 font-firago case-on'>{article.title}</h1>
+                <div className='flex items-center gap-2 mt-1'>
+                    <div className='flex w-1/4 h-2'>
+                        <div style={{ width: `${article.oppCoverage}%` }} className="h-full bg-opp" />
+                        <div style={{ width: `${article.centerCoverage}%` }} className="h-full bg-center" />
+                        <div style={{ width: `${article.govCoverage}%` }} className="h-full bg-gov" />
+                    </div>
+                    <p className='text-xs font-firago'>
+                        {mostCoverage.percentage}% {mostCoverage.position} წყარო: {article.subArticleCount} სტატია
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const BlindspotBar = () => {
-  const {data: articles, isLoading, error} = useFetch('https://localhost:7040/api/Article')
+    const { data: articles, isLoading, error } = useFetch('https://localhost:7040/api/Article?isBlindSpot=true');
 
   return (
     <section className='w-full'>
@@ -11,38 +44,9 @@ const BlindspotBar = () => {
         {error && <p>{error}</p>}
         {isLoading && <p>Loading...</p>}
         <div className='flex flex-col gap-5 text-dark font-firago'>
-            {articles && articles.slice(0, 4).map((article, index) => (
-                <div key={index} className={`p-2 ${index % 2 === 0 ? 'bg-opp' : 'bg-gov'} rounded-lg`} >
-                    {article.photo ? 
-                        <img src={article.photo} alt={article.title}
-                            className='w-full h-[150px] object-cover'
-                        />
-                        :
-                        <div className='w-full h-[150px] bg-dark rounded-t-md bg-opacity-80' />
-                    }
-                    <div className='p-2 rounded-b-md bg-newspaper'>
-                        <h1 className='text-sm font-semibold line-clamp-3 font-firago case-on'>{article.title}</h1>
-                        <div className='flex items-center gap-2 mt-1'>
-                            {index % 2 === 0 && 
-                                <div className='flex w-1/4 h-2'>
-                                    <div className='w-[85%] h-full bg-opp' />
-                                    <div className='w-[10%] h-full bg-center' />
-                                    <div className='w-[5%] h-full bg-blue-800' />
-                                </div>
-                            }
-                            {index % 2 !== 0 &&
-                                <div className='flex w-1/4 h-2'>
-                                    <div className='w-[5%] h-full bg-opp' />
-                                    <div className='w-[10%] h-full bg-center' />
-                                    <div className='w-[85%] h-full bg-gov' />
-                                </div>
-                            }
-
-                            <p className='text-xs font-firago'>85% {index % 2 === 0 ? 'სამთავრობო' : 'ოპოზიციური'} წყარო</p>
-                        </div>
-                    </div>
-                </div>
-            ))}
+            {articles && articles.slice(0, 4).map((article) => 
+                <BlindspotArticle article={article} />
+            )}
             <button className='self-center px-4 py-2 text-base font-semibold border w-fit text-dark border-dark font-firago case-on'>
                 მეტის ნახვა
             </button>

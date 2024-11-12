@@ -3,29 +3,20 @@ import useFetch from '../hooks/useFetch'
 import { useNavigate } from 'react-router-dom';
 import { toast } from './Toast';
 import { deleteArticle } from '../services/apiServices';
+import useCoverageCalculator from '../hooks/useCoverageCalculator';
 
 const Article = ({ article, isBlindspot, admin, refetch }) => {
     const navigate = useNavigate();
-    const [mostCoverage, setMostCoverage] = useState({ percentage: 0, position: '' });
-
-    useEffect(() => {
-        const { govCoverage, centerCoverage, oppCoverage } = article;
-
-        if (govCoverage >= centerCoverage && govCoverage >= oppCoverage) {
-            setMostCoverage({ percentage: govCoverage, position: 'სამთავრობო' });
-        } else if (oppCoverage >= centerCoverage && oppCoverage >= govCoverage) {
-            setMostCoverage({ percentage: oppCoverage, position: 'ოპოზიციური' });
-        } else {
-            setMostCoverage({ percentage: centerCoverage, position: 'ცენტრისტული' });
-        }
-    }, [article.govCoverage, article.centerCoverage, article.oppCoverage]);
+    const mostCoverage = useCoverageCalculator(article)
 
     const handleDelete = async (id, title) => {
         if(admin && window.confirm(`ნამდვილად გსურთ წაშალოთ სტატია "${title}"?`)){
             try {
                 await deleteArticle(id);
                 toast.success('სტატია წაიშალა წარმატებით')
-                refetch();
+                setTimeout(() => {
+                    refetch();
+                }, 1000);
             } catch (error) {
                 toast.error('მოხდა შეცდომა')
             }
@@ -40,7 +31,7 @@ const Article = ({ article, isBlindspot, admin, refetch }) => {
             w-[full] flex justify-between flex-col-reverse items-center gap-2 rounded-md lg:gap-3 lg:flex-row text-dark`}
         >
             <div className={`${isBlindspot ? 'bg-newspaper rounded-md p-2' : 'bg-transparent'} w-full`}>
-                <p className='mb-1 text-xs lg:mb-2 lg:text-sm case-on'>თემა &middot; კატეგორია</p>
+                <p className='mb-1 text-xs lg:mb-2 lg:text-sm case-on'>{article.categoryName}</p>
                 <h1 
                     onClick={() => navigate(`/article/${article.id}`)}
                     className='text-base lg:text-lg text-dark line-clamp-4'
