@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../Logo'
+import { useNavigate } from 'react-router-dom'
 
 const List = ({title, list}) => {
     return (
@@ -15,13 +15,17 @@ const List = ({title, list}) => {
 }
 
 const Footer = () => {
+    const navigate = useNavigate();
   return (
     <section className='bg-dark'>
         <div className='flex flex-col px-20 py-14 gap-14'>
             <div className='flex flex-col gap-10 text-white lg:flex-row lg:gap-52 font-firago'>
-                <div className='flex lg:block'>
-                    <Logo />
-                </div>
+                <img 
+                    src="/assets/logo.svg" 
+                    alt="Mediagram" 
+                    className='w-auto h-20'
+                    onClick={() => navigate('/')}
+                />
                 <div className='flex flex-col gap-10 lg:flex-row lg:gap-52'>
                     <List title='კომპანია' list={['ჩვენს შესახებ', 'ისტორია', 'მისია']} />
                     <List title='დახმარება' list={['კონტაქტი', 'ხშირად დასმული კითხვები', 'დახმარების ცენტრი']} />

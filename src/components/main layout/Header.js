@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import { CiSearch } from "react-icons/ci";
-import Logo from '../Logo';
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [showNav, setShowNav] = useState(false);
-
+  const navigate = useNavigate();
+  
   return (
     <section>
       <div className='relative flex items-center justify-between px-10 py-3 border-b lg:px-20 lg:py-5 border-dark'>
-        <Logo />  
+        <img 
+          src="/assets/logo.svg" 
+          alt="Mediagram" 
+          className='w-auto h-12'
+          onClick={() => navigate('/')}
+        />
         <RxHamburgerMenu 
           onClick={() => setShowNav((prev) => !prev)}
           className='w-10 h-auto text-dark lg:hidden' 
