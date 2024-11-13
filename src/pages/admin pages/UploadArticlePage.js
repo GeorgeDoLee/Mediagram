@@ -5,9 +5,11 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { toast } from '../../components/main layout/Toast';
 import { postArticle } from '../../services/apiServices';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const UploadArticlePage = () => {
     const navigate = useNavigate();
+    const userInfo = useSelector(state => state.user.userInfo);
     const { data: publishers, isLoading: publishersLoading, error: publishersError } = useFetch('https://localhost:7040/api/Publisher');
     const { data: categories, isLoading: categoriesLoading, error: categoriesError } = useFetch('https://localhost:7040/api/Category');
 
@@ -44,7 +46,7 @@ const UploadArticlePage = () => {
                 photo: null,
             };
 
-            await postArticle(articleData);
+            await postArticle(articleData, userInfo.token);
             toast.success('სტატია აიტვირთა წარმატებით');
             setTimeout(() => {
                 navigate('/admin');

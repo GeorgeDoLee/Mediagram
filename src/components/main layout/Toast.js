@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Toast = ({ message, type }) => {
   return (
     <div 
-        className={`text-lg font-firago absolute bottom-10 right-10 transform
+        className={`text-lg font-firago fixed bottom-10 right-10 transform
             bg-newspaper px-10 py-5 shadow-lg rounded-md
             ${type === 'success' ? 'text-green-500' : 'text-red-500'}`}
     >

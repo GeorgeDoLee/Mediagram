@@ -3,14 +3,17 @@ import { toast } from '../main layout/Toast';
 import { deleteCategory } from '../../services/apiServices';
 import { Link } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
+import { useSelector } from 'react-redux';
 
 const CategoriesManager = () => {
+    const userInfo = useSelector(state => state.user.userInfo);
     const { data: categories, isLoading, error, refetch } = useFetch('https://localhost:7040/api/Category');
 
     const handleDelete = async (id, name) => {
         if (window.confirm(`ნამდვილად გსურთ წაშალოთ კატეგორია "${name}"?`)) {
             try {
-                await deleteCategory(id);
+                console.log(userInfo.token);
+                await deleteCategory(id, userInfo.token);
                 toast.success('კატეგორია წაიშალა წარმატებით');
                 refetch();
             } catch (error) {

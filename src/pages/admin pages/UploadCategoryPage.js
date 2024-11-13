@@ -5,10 +5,12 @@ import MainLayout from '../../components/main layout/MainLayout'
 import useFetch from '../../hooks/useFetch';
 import { postCategory, putCategory } from '../../services/apiServices';
 import { toast } from '../../components/main layout/Toast';
+import { useSelector } from 'react-redux';
 
 const UploadCategoryPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const userInfo = useSelector(state => state.user.userInfo);
     const { data: category, isLoading, error } = useFetch(id ? `https://localhost:7040/api/Category/${id}` : null);
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -28,10 +30,10 @@ const UploadCategoryPage = () => {
     const onSubmit = async (data) => {
         try {
             if (id) {
-                await putCategory(id, data);
+                await putCategory(id, data, userInfo.token);
                 toast.success('კატეგორია განახლდა წარმატებით');
             } else {
-                await postCategory(data);
+                await postCategory(data, userInfo.token);
                 toast.success('კატეგორია დაემატა წარმატებით');
             }
             setTimeout(() => {

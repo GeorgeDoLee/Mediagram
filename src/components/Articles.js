@@ -4,15 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from './main layout/Toast';
 import { deleteArticle } from '../services/apiServices';
 import useCoverageCalculator from '../hooks/useCoverageCalculator';
+import { useSelector } from 'react-redux';
 
 const Article = ({ article, isBlindspot, admin, refetch }) => {
     const navigate = useNavigate();
     const mostCoverage = useCoverageCalculator(article)
+    const userInfo = useSelector(state => state.user.userInfo);
 
     const handleDelete = async (id, title) => {
         if(admin && window.confirm(`ნამდვილად გსურთ წაშალოთ სტატია "${title}"?`)){
             try {
-                await deleteArticle(id);
+                await deleteArticle(id, userInfo.token);
                 toast.success('სტატია წაიშალა წარმატებით')
                 setTimeout(() => {
                     refetch();

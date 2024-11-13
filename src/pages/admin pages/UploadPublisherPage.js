@@ -5,10 +5,12 @@ import MainLayout from '../../components/main layout/MainLayout'
 import useFetch from '../../hooks/useFetch';
 import { postPublisher, putPublisher } from '../../services/apiServices';
 import { toast } from '../../components/main layout/Toast';
+import { useSelector } from 'react-redux';
 
 const UploadPublisherPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const userInfo = useSelector(state => state.user.userInfo);
     const { data: publisher, isLoading, error } = useFetch(id ? `https://localhost:7040/api/Publisher/${id}` : null);
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -36,10 +38,10 @@ const UploadPublisherPage = () => {
     const onSubmit = async (data) => {
         try {
             if(id){
-                await putPublisher(id, data);
+                await putPublisher(id, data, userInfo.token);
                 toast.success('მედია განახლდა წარმატებით')
             } else {
-                await postPublisher(data);
+                await postPublisher(data, userInfo.token);
                 toast.success('მედია დაემატა წარმატებით')
             }
             setTimeout(() => {

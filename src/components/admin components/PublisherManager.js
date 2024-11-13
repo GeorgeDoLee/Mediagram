@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import { toast } from '../main layout/Toast';
 import { deletePublisher } from '../../services/apiServices';
 import useFetch from '../../hooks/useFetch';
+import { useSelector } from 'react-redux';
 
 const PublisherManager = () => {
+    const userInfo = useSelector(state => state.user.userInfo);
     const {data: publishers, isLoading, error, refetch} = useFetch('https://localhost:7040/api/Publisher');
 
     const handleDelete = async (id, name) => {
         if(window.confirm(`ნამდვილად გსურთ წაშალოთ ${name}?`)){
             try {
-                await deletePublisher(id);
+                await deletePublisher(id, userInfo.token);
                 toast.success('მედია წაიშალა წარმატებით')
                 refetch();
             } catch (error) {
