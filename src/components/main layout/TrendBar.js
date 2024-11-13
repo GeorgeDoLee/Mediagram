@@ -1,6 +1,6 @@
 import React from 'react'
 import { IoIosTrendingUp } from "react-icons/io";
-import useFetch from '../hooks/useFetch';
+import useFetch from '../../hooks/useFetch';
 
 const TrendBar = () => {
     const {data: categories, isLoading, error} = useFetch('https://localhost:7040/api/Category')

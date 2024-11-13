@@ -11,10 +11,10 @@ import ArticlePage from './pages/ArticlePage'
 import NewsPage from './pages/NewsPage';
 import BlindspotsPage from './pages/BlindspotsPage';
 import ErrorPage from './pages/ErrorPage';
-import AdminPage from './pages/AdminPage';
-import UploadPublisherPage from './pages/UploadPublisherPage';
-import UploadArticlePage from './pages/UploadArticlePage';
-import UploadCategoryPage from './pages/UploadCategoryPage';
+import AdminPage from './pages/admin pages/AdminPage';
+import UploadPublisherPage from './pages/admin pages/UploadPublisherPage';
+import UploadArticlePage from './pages/admin pages/UploadArticlePage';
+import UploadCategoryPage from './pages/admin pages/UploadCategoryPage';
 
 const router = createBrowserRouter([
   {

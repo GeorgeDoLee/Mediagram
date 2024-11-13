@@ -1,6 +1,7 @@
 import React from 'react'
 import useFetch from '../hooks/useFetch'
 import useCoverageCalculator from '../hooks/useCoverageCalculator';
+import { Link } from 'react-router-dom';
 
 const BlindspotArticle = ({article}) => {
     const mostCoverage = useCoverageCalculator(article)
@@ -8,7 +9,7 @@ const BlindspotArticle = ({article}) => {
     return (
         <div 
             key={article.id} 
-            className='p-2 rounded-lg' 
+            className={`p-2 rounded-lg ${mostCoverage.position === 'opp' ? 'bg-opp' : 'bg-gov'}`}
         >
             {article.photo ? 
                 <img src={article.photo} alt={article.title}
@@ -35,7 +36,7 @@ const BlindspotArticle = ({article}) => {
 }
 
 const BlindspotBar = () => {
-    const { data: articles, isLoading, error } = useFetch('https://localhost:7040/api/Article?isBlindSpot=true');
+    const { data: articles, isLoading, error } = useFetch('https://localhost:7040/api/Article?isBlindSpot=true&pageNumber=1&pageSize=5&sortByTrending=true');
 
   return (
     <section className='w-full'>
@@ -44,12 +45,15 @@ const BlindspotBar = () => {
         {error && <p>{error}</p>}
         {isLoading && <p>Loading...</p>}
         <div className='flex flex-col gap-5 text-dark font-firago'>
-            {articles && articles.slice(0, 4).map((article) => 
+            {articles?.articles && articles.articles.slice(0, 4).map((article) => 
                 <BlindspotArticle article={article} />
             )}
-            <button className='self-center px-4 py-2 text-base font-semibold border w-fit text-dark border-dark font-firago case-on'>
+            <Link 
+                to='/blindspots'
+                className='self-center px-4 py-2 text-base font-semibold border w-fit text-dark border-dark font-firago case-on'
+            >
                 მეტის ნახვა
-            </button>
+            </Link>
         </div>
     </section>
   )

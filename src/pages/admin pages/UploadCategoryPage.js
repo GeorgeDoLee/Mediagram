@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import MainLayout from '../components/MainLayout';
-import useFetch from '../hooks/useFetch';
-import { postCategory, putCategory } from '../services/apiServices';
-import { toast } from '../components/Toast';
+import MainLayout from '../../components/main layout/MainLayout'
+import useFetch from '../../hooks/useFetch';
+import { postCategory, putCategory } from '../../services/apiServices';
+import { toast } from '../../components/main layout/Toast';
 
 const UploadCategoryPage = () => {
     const { id } = useParams();
@@ -44,7 +44,7 @@ const UploadCategoryPage = () => {
 
     return (
         <MainLayout>
-            <section className='px-20 py-5'>
+            <section className='px-20 py-10'>
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-1/2 gap-3 mx-auto'>
                     <div>
                         <input

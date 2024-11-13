@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MainLayout from '../components/MainLayout'
+import MainLayout from '../components/main layout/MainLayout'
 import { useParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
 import MainArticle from '../components/MainArticle'
@@ -76,7 +76,7 @@ const ArticlePage = () => {
 
   return (
     <MainLayout>
-      <section className='px-20 py-5'>
+      <section className='px-20 py-10'>
         <div className='flex justify-between gap-5'>
           <div className='flex flex-col w-[20%] gap-5'>
             <PublisherBar />

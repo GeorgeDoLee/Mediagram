@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { CiSearch } from "react-icons/ci";
-import Logo from './Logo';
+import Logo from '../Logo';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from 'react-router-dom';
 

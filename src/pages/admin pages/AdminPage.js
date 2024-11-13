@@ -1,15 +1,15 @@
 import React from 'react'
-import MainLayout from '../components/MainLayout'
-import PublisherManager from '../components/PublisherManager'
-import Articles from '../components/Articles'
+import MainLayout from '../../components/main layout/MainLayout'
+import PublisherManager from '../../components/admin components/PublisherManager'
+import CategoriesManager from '../../components/admin components/CategoriesManager';
+import Articles from '../../components/Articles'
 import { Link } from 'react-router-dom';
-import CategoriesManager from '../components/CategoriesManager';
 
 const AdminPage = () => {
 
   return (
     <MainLayout>
-        <section className='px-20 py-5'>
+        <section className='px-20 py-10'>
           <div className='flex flex-col gap-5'>
             <div className='flex gap-2'>
               <Link to="/admin/publisher" className='self-start px-4 py-2 text-base border border-dark text-dark'>მედიის დამატება</Link>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from '../hooks/useFetch'
 import { useNavigate } from 'react-router-dom';
-import { toast } from './Toast';
+import { toast } from './main layout/Toast';
 import { deleteArticle } from '../services/apiServices';
 import useCoverageCalculator from '../hooks/useCoverageCalculator';
 
@@ -26,7 +26,7 @@ const Article = ({ article, isBlindspot, admin, refetch }) => {
     return (
         <div 
             key={article.id} 
-            className={`${isBlindspot ? Math.random() * 10 % 2 === 0 ? 'bg-gov' : 'bg-opp' : 'bg-transparent'} 
+            className={`${isBlindspot ? (mostCoverage.position === 'სამთავრობო' ? 'bg-gov' : 'bg-opp') : 'bg-transparent'} 
             ${isBlindspot ? 'p-2' : ''} 
             w-[full] flex justify-between flex-col-reverse items-center gap-2 rounded-md lg:gap-3 lg:flex-row text-dark`}
         >
@@ -70,29 +70,53 @@ const Article = ({ article, isBlindspot, admin, refetch }) => {
     );
 }
 
-const Articles = ({isBlindspot = false, admin}) => {
-    const {data: articles, isLoading, error, refetch} = useFetch('https://localhost:7040/api/Article')
+const Articles = ({ isBlindspot = false, admin }) => {
+    const [page, setPage] = useState(1);
+    const [allArticles, setAllArticles] = useState([]);
+    const { data: articles, isLoading, error, refetch } = useFetch(
+        isBlindspot
+            ? `https://localhost:7040/api/Article?isBlindSpot=true&pageNumber=${page}&pageSize=10`
+            : `https://localhost:7040/api/Article?pageNumber=${page}&pageSize=10`
+    );
 
     useEffect(() => {
-        if(articles){
-            console.log(articles, 1);
+        refetch();
+    }, [page]);
+
+    useEffect(() => {
+        if (articles?.articles) {
+            setAllArticles((prevArticles) => [
+                ...prevArticles,
+                ...articles.articles.filter((newArticle) =>
+                    !prevArticles.some((article) => article.id === newArticle.id)
+                ),
+            ]);
         }
     }, [articles]);
-    
-  return (
-    <section>
-        <div className='flex flex-col gap-5 mt-2 lg:gap-10 text-dark font-firago'>
-            {isLoading && <p>loading...</p>}
-            {error && <p>{error}</p>}
-            {articles && articles.map((article) => (
-                <Article article={article} isBlindspot={isBlindspot} admin={admin} refetch={refetch} />
-            ))}
-            <button className='self-center px-5 py-2 text-base font-semibold border w-fit text-dark border-dark font-firago case-on'>
-                მეტის ნახვა
-            </button>
-        </div>
-    </section>
-  )
-}
+
+    const loadMoreArticles = () => {
+        setPage((prevPage) => prevPage + 1);
+    };
+
+    return (
+        <section>
+            <div className='flex flex-col gap-5 mt-2 lg:gap-10 text-dark font-firago'>
+                {isLoading && <p>loading...</p>}
+                {error && <p>{error}</p>}
+                {allArticles.map((article) => (
+                    <Article key={article.id} article={article} isBlindspot={isBlindspot} admin={admin} refetch={refetch} />
+                ))}
+                {articles?.hasNextPage && 
+                    <button
+                        onClick={loadMoreArticles}
+                        className='self-center px-5 py-2 text-base font-semibold border w-fit text-dark border-dark font-firago case-on'
+                    >
+                        მეტის ნახვა
+                    </button>
+                }
+            </div>
+        </section>
+    );
+};
 
 export default Articles

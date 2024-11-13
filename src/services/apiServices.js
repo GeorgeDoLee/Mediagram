@@ -1,6 +1,7 @@
-const PUBLISHER_URL = 'https://localhost:7040/api/Publisher'
-const ARTICLE_URL = 'https://localhost:7040/api/Article'
-const CATEGORY_URL = 'https://localhost:7040/api/Category'
+const BASE_URL = 'https://localhost:7040/api'
+const PUBLISHER_URL = `${BASE_URL}/Publisher`
+const ARTICLE_URL = `${BASE_URL}/Article`
+const CATEGORY_URL = `${BASE_URL}/Publisher`
 
 export const postPublisher = async (data) => {
     try {

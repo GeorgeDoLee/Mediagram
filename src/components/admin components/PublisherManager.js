@@ -1,8 +1,8 @@
 import React from 'react'
-import useFetch from '../hooks/useFetch';
 import { Link } from 'react-router-dom';
-import { toast } from './Toast';
-import { deletePublisher } from '../services/apiServices';
+import { toast } from '../main layout/Toast';
+import { deletePublisher } from '../../services/apiServices';
+import useFetch from '../../hooks/useFetch';
 
 const PublisherManager = () => {
     const {data: publishers, isLoading, error, refetch} = useFetch('https://localhost:7040/api/Publisher');

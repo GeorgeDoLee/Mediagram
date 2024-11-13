@@ -21,7 +21,7 @@ const TopArticle = ({article}) => {
 }
 
 const TopNewsBar = () => {
-    const {data: articles, isLoading, error} = useFetch('https://localhost:7040/api/Article')
+    const {data: articles, isLoading, error} = useFetch('https://localhost:7040/api/Article?pageNumber=1&pageSize=8&sortByTrending=true')
 
   return (
     <section className='w-full'>
@@ -30,7 +30,7 @@ const TopNewsBar = () => {
         <div className='flex flex-col gap-5 text-dark font-firago'>
             {error && <p>{error}</p>}
             {isLoading && <p>Loading...</p>}
-            {articles && articles.slice(0, 5).map((article) => 
+            {articles?.articles && articles.articles.slice(0, 5).map((article) => 
                 <TopArticle article={article} />
             )}
         </div>

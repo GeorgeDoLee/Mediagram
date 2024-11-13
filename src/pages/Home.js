@@ -1,15 +1,15 @@
 import React from 'react'
-import MainLayout from "../components/MainLayout"
+import MainLayout from "../components/main layout/MainLayout"
 import BlindspotBar from '../components/BlindspotBar'
 import MainArticle from '../components/MainArticle'
 import TopNewsBar from '../components/TopNewsBar'
 import Articles from '../components/Articles'
 import PublisherBar from '../components/PublisherBar'
 
-const Home = () => {
+const Home = () => {  
   return (
     <MainLayout>
-      <div className='flex flex-col gap-5 px-8 py-3 lg:px-20 lg:py-5'>
+      <div className='flex flex-col gap-5 px-8 py-3 lg:px-20 lg:py-10'>
         <div className='flex flex-col justify-between gap-5 lg:flex-row'>
           <div className='lg:w-[75%] w-full flex items-center justify-center'>
             <MainArticle />

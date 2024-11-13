@@ -1,8 +1,8 @@
 import React from 'react';
-import useFetch from '../hooks/useFetch';
-import { toast } from './Toast';
-import { deleteCategory } from '../services/apiServices';
+import { toast } from '../main layout/Toast';
+import { deleteCategory } from '../../services/apiServices';
 import { Link } from 'react-router-dom';
+import useFetch from '../../hooks/useFetch';
 
 const CategoriesManager = () => {
     const { data: categories, isLoading, error, refetch } = useFetch('https://localhost:7040/api/Category');

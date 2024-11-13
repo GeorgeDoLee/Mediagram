@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import MainLayout from '../components/MainLayout';
-import useFetch from '../hooks/useFetch';
+import MainLayout from '../../components/main layout/MainLayout'
+import useFetch from '../../hooks/useFetch';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { toast } from '../components/Toast';
-import { postArticle } from '../services/apiServices';
+import { toast } from '../../components/main layout/Toast';
+import { postArticle } from '../../services/apiServices';
 import { useNavigate } from 'react-router-dom';
 
 const UploadArticlePage = () => {
@@ -56,7 +56,7 @@ const UploadArticlePage = () => {
 
     return (
         <MainLayout>
-            <section className="px-20 py-5">
+            <section className="px-20 py-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-1/2 gap-3 mx-auto">
                     <div>
                         <input
