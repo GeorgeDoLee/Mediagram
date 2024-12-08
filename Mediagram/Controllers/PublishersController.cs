@@ -25,7 +25,7 @@ namespace Mediagram.Controllers
 
             if (publishers == null || !publishers.Any())
             {
-                return NotFound(new ApiResponse("No publishers found."));
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
             return Ok(new ApiResponse(true, "Publishers retrieved successfully.", publishers));
@@ -39,7 +39,7 @@ namespace Mediagram.Controllers
 
             if (publisher == null)
             {
-                return NotFound(new ApiResponse("Publisher not found."));
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
             return Ok(new ApiResponse(true, "Publisher retrieved successfully", publisher));
@@ -51,7 +51,7 @@ namespace Mediagram.Controllers
         {
             if (dto == null)
             {
-                return BadRequest(new ApiResponse("Invalid publisher data."));
+                return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
             var publisher = await _publisherService.AddPublisherAsync(dto);
@@ -65,14 +65,14 @@ namespace Mediagram.Controllers
         {
             if (dto == null)
             {
-                return BadRequest(new ApiResponse("invalid publisher data."));
+                return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
             var publisher = await _publisherService.UpdatePublisherAsync(id, dto);
 
             if (publisher == null)
             {
-                return NotFound(new ApiResponse("Publisher not found."));
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
             return Ok(new ApiResponse(true, "Publisher updated successfully.", publisher));
@@ -87,7 +87,7 @@ namespace Mediagram.Controllers
             return publisherDeleted ? 
                 Ok(new ApiResponse(true, "Publisher deleted successfully."))
                 :
-                NotFound(new ApiResponse("Publisher not found,"));
+                NotFound(new ApiResponse(ErrorMessages.NotFound));
         }
     }
 

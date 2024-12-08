@@ -24,7 +24,7 @@ namespace Mediagram.Controllers
 
             if (articles == null || !articles.Any())
             {
-                return NotFound(new ApiResponse("No articles found."));
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
             return Ok(new ApiResponse(true, "Articles retrieved successfully.", articles));
@@ -39,7 +39,7 @@ namespace Mediagram.Controllers
 
             if (article == null)
             {
-                return NotFound(new ApiResponse("Article not found."));
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
             return Ok(new ApiResponse(true, "Article retrieved successfully.", article));
@@ -51,7 +51,7 @@ namespace Mediagram.Controllers
         {
             if (dto == null)
             {
-                return BadRequest(new ApiResponse("Invalid article data."));
+                return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
             var article = await _articleService.AddArticleAsync(dto);
@@ -65,14 +65,14 @@ namespace Mediagram.Controllers
         {
             if (dto == null)
             {
-                return BadRequest(new ApiResponse("Article data is invalid."));
+                return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
             var article = await _articleService.UpdateArticleAsync(id, dto);
 
             if (article == null)
             {
-                return NotFound(new ApiResponse("Article not found,"));
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
             return Ok(new ApiResponse(true, "Article updated successfully.", article));
@@ -87,7 +87,7 @@ namespace Mediagram.Controllers
             return categoryDeleted ?
                 Ok(new ApiResponse(true, "Article deleted successfully."))
                 :
-                NotFound(new ApiResponse("Article not found."));
+                NotFound(new ApiResponse(ErrorMessages.NotFound));
         }
     }
 }
