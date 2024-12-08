@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<MediagramContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
