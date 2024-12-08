@@ -15,6 +15,7 @@ namespace Mediagram.Data
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<CoveragePercentage> CoveragePercentages { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +37,12 @@ namespace Mediagram.Data
                 .HasOne(sa => sa.Publisher)
                 .WithMany(p => p.SubArticles)
                 .HasForeignKey(sa => sa.PublisherId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Article>()
+                .HasOne(a => a.Category)
+                .WithMany(c => c.Articles)
+                .HasForeignKey(a => a.CategoryId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }

@@ -8,6 +8,9 @@
         public string? Photo {  get; set; }  
         public required DateTime PublishedDate { get; set; }
 
+        public required int CategoryId { get; set; }
+        public Category? Category { get; set; }
+
         public ICollection<SubArticle> SubArticles { get; set; } = new List<SubArticle>();
         public CoveragePercentage? CoveragePercentage { get; set; }
     }
