@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediagram", "Mediagram\Mediagram.csproj", "{897299EE-65EE-43F3-9B37-66F46CE854DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{897299EE-65EE-43F3-9B37-66F46CE854DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{897299EE-65EE-43F3-9B37-66F46CE854DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{897299EE-65EE-43F3-9B37-66F46CE854DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{897299EE-65EE-43F3-9B37-66F46CE854DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9ACCFB27-EE99-4A43-97D1-2A164C1DEB5C}
+	EndGlobalSection
+EndGlobal

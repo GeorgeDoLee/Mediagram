@@ -1,0 +1,6 @@
+@Mediagram_HostAddress = http://localhost:5233
+
+GET {{Mediagram_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
