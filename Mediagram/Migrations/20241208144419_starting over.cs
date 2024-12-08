@@ -46,7 +46,7 @@ namespace Mediagram.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bias = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -61,7 +61,6 @@ namespace Mediagram.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublishedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrendingScore = table.Column<int>(type: "int", nullable: false),

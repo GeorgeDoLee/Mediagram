@@ -54,10 +54,6 @@ namespace Mediagram.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsBlindSpot")
                         .HasColumnType("bit");
 

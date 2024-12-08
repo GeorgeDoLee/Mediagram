@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mediagram.Migrations
 {
     [DbContext(typeof(MediagramContext))]
-    [Migration("20241208130644_images not required")]
-    partial class imagesnotrequired
+    [Migration("20241208144419_starting over")]
+    partial class startingover
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,10 +56,6 @@ namespace Mediagram.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBlindSpot")
                         .HasColumnType("bit");
