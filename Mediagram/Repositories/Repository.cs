@@ -5,60 +5,62 @@ namespace Mediagram.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DbContext Context;
+        private readonly DbContext _context;
+
         public Repository(DbContext context)
         {
-            Context = context;
+            _context = context;
         }
 
-
-        public void Add(T entity)
+        public async Task AddAsync(T entity)
         {
-            Context.Set<T>().Add(entity);
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void AddRange(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities)
         {
-            Context.Set<T>().AddRange(entities);
+            await _context.Set<T>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
         }
 
-
-        public IEnumerable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return Context.Set<T>().Where(predicate);
+            return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
-        public T Get(int id)
+        public async Task<T> GetAsync(int id)
         {
-            return Context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return Context.Set<T>().ToList();
+            return await _context.Set<T>().ToListAsync();
         }
 
-        public IEnumerable<T> GetPaginated(Expression<Func<T, bool>> predicate, int pageNumber, int pageSize)
+        public async Task<IEnumerable<T>> GetPaginatedAsync(Expression<Func<T, bool>> predicate, int pageNumber, int pageSize)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
 
-            return Context.Set<T>()
+            return await _context.Set<T>()
                 .Where(predicate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
         }
 
-
-        public void Remove(T entity)
+        public async Task RemoveAsync(T entity)
         {
-            Context.Set<T>().Remove(entity);
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
         {
-            Context.Set<T>().RemoveRange(entities);
+            _context.Set<T>().RemoveRange(entities);
+            await _context.SaveChangesAsync();
         }
     }
 }

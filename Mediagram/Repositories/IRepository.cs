@@ -4,15 +4,15 @@ namespace Mediagram.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        T Get(int id);
-        IEnumerable<T> GetAll();
-        IEnumerable<T> GetPaginated(Expression<Func<T, bool>> predicate, int pageNumber, int pageSize);
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        Task<T> GetAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetPaginatedAsync(Expression<Func<T, bool>> predicate, int pageNumber, int pageSize);
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
+        Task AddAsync(T entity);
+        Task AddRangeAsync(IEnumerable<T> entities);
 
-        void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
+        Task RemoveAsync(T entity);
+        Task RemoveRangeAsync(IEnumerable<T> entities);
     }
 }

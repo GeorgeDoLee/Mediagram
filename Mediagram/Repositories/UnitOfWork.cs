@@ -25,9 +25,9 @@ namespace Mediagram.Repositories
             CoveragePercentages = new Repository<CoveragePercentage>(context);
         }
 
-        public void Complete()
+        public async Task Complete()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

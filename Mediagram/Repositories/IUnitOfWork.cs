@@ -10,6 +10,6 @@ namespace Mediagram.Repositories
         IRepository<Publisher> Publishers { get; }
         IRepository<CoveragePercentage> CoveragePercentages { get; }
 
-        void Complete();
+        Task Complete();
     }
 }
