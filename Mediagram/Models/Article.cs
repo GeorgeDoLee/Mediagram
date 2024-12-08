@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public required string Title { get; set; }
-        public required string Content { get; set; }
         public string? Photo {  get; set; }  
         public required DateTime PublishedDate { get; set; }
         public int TrendingScore { get; set; } = 0;
