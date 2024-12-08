@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<PublisherService>();
 
 builder.Services.AddCors(options =>
 {
