@@ -39,7 +39,7 @@ namespace Mediagram.Controllers
 
             if (publisher == null)
             {
-                return NotFound(new ApiResponse("Publisher not found.");
+                return NotFound(new ApiResponse("Publisher not found."));
             }
 
             return Ok(new ApiResponse(true, "Publisher retrieved successfully", publisher));
