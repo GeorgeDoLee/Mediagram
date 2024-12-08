@@ -7,7 +7,7 @@
         public required float ProOppositionCoverage { get; set; }
         public required float CentristCoverage { get; set; }
 
-        public required int ArticleId { get; set; }
-        public Article Article { get; set; }
+        public int? ArticleId { get; set; }
+        public Article? Article { get; set; }
     }
 }

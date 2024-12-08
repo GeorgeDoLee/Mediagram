@@ -10,7 +10,7 @@
         public int TrendingScore { get; set; } = 0;
         public required bool IsBlindSpot { get; set; }
 
-        public required int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 
         public ICollection<SubArticle> SubArticles { get; set; } = new List<SubArticle>();
