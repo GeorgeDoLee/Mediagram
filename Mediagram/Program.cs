@@ -1,7 +1,12 @@
 using Mediagram.Data;
+using Mediagram.Repositories;
+using Mediagram.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<CategoryService>();
 
 builder.Services.AddCors(options =>
 {
