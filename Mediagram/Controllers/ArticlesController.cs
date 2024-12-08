@@ -33,7 +33,7 @@ namespace Mediagram.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategoryById(int id)
+        public async Task<IActionResult> GetArticleById(int id)
         {
             var article = await _articleService.GetArticleByIdAsync(id);
 
@@ -47,7 +47,7 @@ namespace Mediagram.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddCategory(ArticleDto dto)
+        public async Task<IActionResult> AddArticle(ArticleDto dto)
         {
             if (dto == null)
             {
@@ -61,7 +61,7 @@ namespace Mediagram.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, ArticleDto dto)
+        public async Task<IActionResult> UpdateArticle(int id, ArticleDto dto)
         {
             if (dto == null)
             {
@@ -80,7 +80,7 @@ namespace Mediagram.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteArticle(int id)
         {
             var categoryDeleted = await _articleService.DeleteArticleAsync(id);
 

@@ -96,7 +96,6 @@ namespace Mediagram.Services
             };
 
             await _unitOfWork.Articles.AddAsync(article);
-            await _unitOfWork.Complete();
 
             coveragePercentage.ArticleId = article.Id;
             await _unitOfWork.CoveragePercentages.AddAsync(coveragePercentage);
@@ -107,8 +106,8 @@ namespace Mediagram.Services
             }
 
             await _unitOfWork.SubArticles.AddRangeAsync(subArticles);
-
             await _unitOfWork.Complete();
+
 
             return article;
         }
