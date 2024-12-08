@@ -1,4 +1,6 @@
-﻿using Mediagram.DTOs;
+﻿using Mediagram.Common;
+using Mediagram.DTOs;
+using Mediagram.Models;
 using Mediagram.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,45 +21,74 @@ namespace Mediagram.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-            var response = await _categoryService.GetAllCategoriesAsync();
+            var categories = await _categoryService.GetAllCategoriesAsync();
 
-            return response.Success ? Ok(response) : NotFound(response);
+            if (categories == null || !categories.Any())
+            {
+                return NotFound(new ApiResponse("No categories found."));
+            }
+
+            return Ok(new ApiResponse(true, "Categories retrieved successfully.", categories));
+
         }
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
-            var response = await _categoryService.GetCategoryByIdAsync(id);
+            var category = await _categoryService.GetCategoryByIdAsync(id);
 
-            return response.Success ? Ok(response) : NotFound(response);
+            if (category == null)
+            {
+                return NotFound(new ApiResponse("Category not found."));
+            }
+
+            return Ok(new ApiResponse(true, "Category retrieved successfully", category));
         }
 
 
         [HttpPost]
         public async Task<IActionResult> AddCategory(CategoryDto dto)
         {
-            var response = await _categoryService.AddCategoryAsync(dto);
+            if (dto == null)
+            {
+                return BadRequest(new ApiResponse("Invalid category data."));
+            }
 
-            return response.Success ? Ok(response) : BadRequest(response);
+            var category = await _categoryService.AddCategoryAsync(dto);
+
+            return Ok(new ApiResponse(true, "Category added successfully.", category));
         }
 
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, CategoryDto dto)
         {
-            var response = await _categoryService.UpdateCategoryAsync(id, dto);
+            if (dto == null)
+            {
+                return BadRequest(new ApiResponse("Category data is invalid."));
+            }
 
-            return response.Success ? Ok(response) : BadRequest(response);
+            var category = await _categoryService.UpdateCategoryAsync(id, dto);
+
+            if (category == null)
+            {
+                return NotFound(new ApiResponse("Category not found,"));
+            }
+
+            return Ok(new ApiResponse(true, "Category updated successfully.", category));
         }
 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var response = await _categoryService.DeleteCategoryAsync(id);
+            var categoryDeleted = await _categoryService.DeleteCategoryAsync(id);
 
-            return response.Success ? Ok(response) : BadRequest(response);
+            return categoryDeleted ? 
+                Ok(new ApiResponse(true, "Category deleted successfully.")) 
+                : 
+                NotFound(new ApiResponse("Category not found."));
         }
     }
 }

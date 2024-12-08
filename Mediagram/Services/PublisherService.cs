@@ -13,39 +13,24 @@ namespace Mediagram.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetAllPublishersAsync()
+        public async Task<IEnumerable<Publisher>> GetAllPublishersAsync()
         {
             var publishers = await _unitOfWork.Publishers.GetAllAsync();
 
-            if (publishers == null || !publishers.Any())
-            {
-                return new ApiResponse("No publishers found.");
-            }
-
-            return new ApiResponse(true, "Publishers retrieved successfully.", publishers);
+            return publishers;
         }
 
 
-        public async Task<ApiResponse> GetPublisherByIdAsync(int id)
+        public async Task<Publisher> GetPublisherByIdAsync(int id)
         {
             var publisher = await _unitOfWork.Publishers.GetAsync(id);
 
-            if (publisher == null)
-            {
-                return new ApiResponse("Publisher not found.");
-            }
-
-            return new ApiResponse(true, "Publisher retrieved successfully", publisher);
+            return publisher;
         }
 
 
-        public async Task<ApiResponse> AddPublisherAsync(PublisherDto dto)
+        public async Task<Publisher> AddPublisherAsync(PublisherDto dto)
         {
-            if (dto == null)
-            {
-                return new ApiResponse("Invalid publisher data.");
-            }
-
             var publisher = new Publisher
             {
                 Name = dto.Name,
@@ -55,22 +40,19 @@ namespace Mediagram.Services
             await _unitOfWork.Publishers.AddAsync(publisher);
             await _unitOfWork.Complete();
 
-            return new ApiResponse(true, "Publisher added successfully.", publisher);
+            return publisher;
         }
 
 
-        public async Task<ApiResponse> UpdatePublisherAsync(int id, PublisherDto dto)
+        public async Task<Publisher> UpdatePublisherAsync(int id, PublisherDto dto)
         {
-            if (dto == null)
-            {
-                return new ApiResponse("invalid publisher data.");
-            }
+            
 
             var existingPublisher = await _unitOfWork.Publishers.GetAsync(id);
 
             if (existingPublisher == null)
             {
-                return new ApiResponse("Publisher not found.");
+                return null;
             }
 
             existingPublisher.Name = dto.Name;
@@ -78,23 +60,23 @@ namespace Mediagram.Services
 
             await _unitOfWork.Complete();
 
-            return new ApiResponse(true, "Publisher updated successfully.", existingPublisher);
+            return existingPublisher;
         }
 
 
-        public async Task<ApiResponse> DeletePublisherAsync(int id)
+        public async Task<bool> DeletePublisherAsync(int id)
         {
             var publisher = await _unitOfWork.Publishers.GetAsync(id);
 
             if (publisher == null)
             {
-                return new ApiResponse("Publisher not found.");
+                return false;
             }
 
             await _unitOfWork.Publishers.RemoveAsync(publisher);
             await _unitOfWork.Complete();
 
-            return new ApiResponse(true, "Publisher deleted successfully.");
+            return true;
         }
     }
 }

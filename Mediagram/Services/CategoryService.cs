@@ -14,39 +14,25 @@ namespace Mediagram.Services
         }
 
 
-        public async Task<ApiResponse> GetAllCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync();
-
-            if (categories == null || !categories.Any())
-            {
-                return new ApiResponse("No categories found.");
-            }
-
-            return new ApiResponse(true, "Categories retrieved successfully.", categories);
+            
+            return categories;
         }
 
 
-        public async Task<ApiResponse> GetCategoryByIdAsync(int id)
+        public async Task<Category> GetCategoryByIdAsync(int id)
         {
             var category = await _unitOfWork.Categories.GetAsync(id);
 
-            if (category == null)
-            {
-                return new ApiResponse("Category not found.");
-            }
-
-            return new ApiResponse(true, "Category retrieved successfully", category);
+            return category;
         }
 
 
-        public async Task<ApiResponse> AddCategoryAsync(CategoryDto dto)
+        public async Task<Category> AddCategoryAsync(CategoryDto dto)
         {
-            if (dto == null)
-            {
-                return new ApiResponse("Invalid category data.");
-            }
-
+            
             var category = new Category
             {
                 Name = dto.Name,
@@ -55,45 +41,42 @@ namespace Mediagram.Services
             await _unitOfWork.Categories.AddAsync(category);
             await _unitOfWork.Complete();
 
-            return new ApiResponse(true, "Category added successfully.", category);
+            return category;
         }
 
 
-        public async Task<ApiResponse> UpdateCategoryAsync(int id, CategoryDto dto)
+        public async Task<Category> UpdateCategoryAsync(int id, CategoryDto dto)
         {
-            if (dto == null)
-            {
-                return new ApiResponse("Category data is invalid.");
-            }
+            
 
             var existingCategory = await _unitOfWork.Categories.GetAsync(id);
 
             if (existingCategory == null)
             {
-                return new ApiResponse("Category not found.");
+                return null;
             }
 
             existingCategory.Name = dto.Name;
 
             await _unitOfWork.Complete();
 
-            return new ApiResponse(true, "Category updated successfully.", existingCategory);
+            return existingCategory;
         }
 
 
-        public async Task<ApiResponse> DeleteCategoryAsync(int id)
+        public async Task<bool> DeleteCategoryAsync(int id)
         {
             var category = await _unitOfWork.Categories.GetAsync(id);
 
             if (category == null)
             {
-                return new ApiResponse("Category not found.");
+                return false;
             }
 
             await _unitOfWork.Categories.RemoveAsync(category);
             await _unitOfWork.Complete();
 
-            return new ApiResponse(true, "Category deleted successfully.");
+            return true;
         }
     }
 }
