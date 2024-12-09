@@ -25,7 +25,6 @@ namespace Mediagram.Repositories
 
             var query = _context.Set<Article>()
                 .Include(a => a.Category)
-                .Include(a => a.SubArticles)
                 .AsQueryable();
 
             if (isBlindspot.HasValue)
