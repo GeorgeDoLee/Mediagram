@@ -19,7 +19,7 @@
             if (file == null || file.Length == 0)
                 throw new ArgumentException("No file provided.");
 
-            var fileName = Guid.NewGuid().ToString() + file.FileName;
+            var fileName = Guid.NewGuid().ToString() + Path.GetFileName(file.FileName);
             var filePath = Path.Combine(_imageDirectory, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
@@ -27,7 +27,7 @@
                 await file.CopyToAsync(stream);
             }
 
-            return Path.Combine("uploads", fileName);
+            return "uploads/" + fileName;
         }
 
 
