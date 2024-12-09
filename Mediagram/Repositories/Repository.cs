@@ -5,7 +5,7 @@ namespace Mediagram.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
 
         public Repository(DbContext context)
         {
@@ -29,7 +29,7 @@ namespace Mediagram.Repositories
             return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
-        public async Task<T> GetAsync(int id)
+        public virtual async Task<T> GetAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
@@ -37,18 +37,6 @@ namespace Mediagram.Repositories
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetPaginatedAsync(Expression<Func<T, bool>> predicate, int pageNumber, int pageSize)
-        {
-            if (pageNumber <= 0) pageNumber = 1;
-            if (pageSize <= 0) pageSize = 10;
-
-            return await _context.Set<T>()
-                .Where(predicate)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
         }
 
         public async Task RemoveAsync(T entity)

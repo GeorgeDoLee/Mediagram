@@ -1,14 +1,14 @@
 ﻿using Mediagram.Models;
+using Mediagram.Repositories.Mediagram.Repositories;
 
 namespace Mediagram.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Article> Articles { get; }
+        IArticleRepository Articles { get; }
         IRepository<SubArticle> SubArticles { get; }
         IRepository<Category> Categories { get; }
         IRepository<Publisher> Publishers { get; }
-        IRepository<CoveragePercentage> CoveragePercentages { get; }
 
         Task Complete();
     }

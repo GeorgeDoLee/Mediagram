@@ -1,5 +1,6 @@
 ﻿using Mediagram.Data;
 using Mediagram.Models;
+using Mediagram.Repositories.Mediagram.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mediagram.Repositories
@@ -8,21 +9,19 @@ namespace Mediagram.Repositories
     {
         private readonly DbContext _context;
 
-        public IRepository<Article> Articles { get; }
+        public IArticleRepository Articles { get; }
         public IRepository<SubArticle> SubArticles { get; }
         public IRepository<Category> Categories { get; }
         public IRepository<Publisher> Publishers { get; }
-        public IRepository<CoveragePercentage> CoveragePercentages { get; }
 
         public UnitOfWork(MediagramContext context)
         {
             _context = context;
 
-            Articles = new Repository<Article>(context);
+            Articles = new ArticleRepository(context);
             SubArticles = new Repository<SubArticle>(context);
             Categories = new Repository<Category>(context);
             Publishers = new Repository<Publisher>(context);
-            CoveragePercentages = new Repository<CoveragePercentage>(context);
         }
 
         public async Task Complete()
