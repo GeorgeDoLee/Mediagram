@@ -89,6 +89,36 @@ namespace Mediagram.Controllers
                 :
                 NotFound(new ApiResponse(ErrorMessages.NotFound));
         }
-    }
 
+
+        [HttpPost("upload-logo/{id}")]
+        public async Task<IActionResult> UploadPublisherLogo(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new ApiResponse(ErrorMessages.InvalidData);
+            }
+
+            var publisher = await _publisherService.UploadPublisherLogoAsync(id, file);
+
+            if(publisher == null)
+            {
+                return NotFound(new ApiResponse(ErrorMessages.NotFound));
+            }
+
+            return Ok(new ApiResponse(true, "Logo uploaded successfully.", publisher));
+        }
+
+
+        [HttpDelete("delete-logo/{id}")]
+        public async Task<IActionResult> DeletePublisherLogo(int id)
+        {
+            var logoDeleted = await _publisherService.DeletePublisherLogoAsync(id);
+
+            return logoDeleted ?
+                Ok(new ApiResponse(true, "Logo deleted successfully."))
+                :
+                NotFound(new ApiResponse(ErrorMessages.NotFound));
+        }
+    }
 }
