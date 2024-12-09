@@ -116,7 +116,10 @@ namespace Mediagram.Services
 
             if(publisher != null && publisher.Logo != null)
             {
-                return _fileManager.DeleteImage(publisher.Logo);
+                _fileManager.DeleteImage(publisher.Logo);
+                publisher.Logo = null;
+                await _unitOfWork.Complete();
+                return true;
             }
 
             return false;
