@@ -1,4 +1,5 @@
 using Mediagram.Data;
+using Mediagram.FileManagement;
 using Mediagram.Repositories;
 using Mediagram.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<PublisherService>();
 builder.Services.AddScoped<ArticleService>();
+builder.Services.AddScoped<FileManager>();
 
 builder.Services.AddCors(options =>
 {
