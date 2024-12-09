@@ -1,4 +1,5 @@
-﻿using Mediagram.DTOs;
+﻿using Mediagram.Common;
+using Mediagram.DTOs;
 using Mediagram.Models;
 using Mediagram.Models.Enums;
 using Mediagram.Repositories;
@@ -35,9 +36,54 @@ namespace Mediagram.Services
         }
 
 
-        public async Task<Article> AddArticleAsync(ArticleDto dto) // not implemented yet
+        public async Task<Article> AddArticleAsync(ArticleDto dto)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(dto.Title) || dto.CategoryId <= 0)
+            {
+                throw new ArgumentException(ErrorMessages.InvalidData);
+            }
+
+            var (proGov, proOpp, centrist) = coverageCalculator(dto.ArticleUrls.Keys.ToList());
+            bool isBlindSpot = IsBlindSpot(proGov, proOpp);
+
+            var article = new Article
+            {
+                Title = dto.Title,
+                PublishedDate = DateTime.UtcNow,
+                CategoryId = dto.CategoryId,
+                IsBlindSpot = isBlindSpot,
+                ProGovernmentCoverage = proGov,
+                ProOppositionCoverage = proOpp,
+                CentristCoverage = centrist,
+            };
+
+            await _unitOfWork.Articles.AddAsync(article);
+            await _unitOfWork.Complete();
+
+            List<SubArticle> subArticles = new List<SubArticle>();
+
+            foreach (var kvp in dto.ArticleUrls)
+            {
+                var publisherId = kvp.Key;
+                var articleUrl = kvp.Value;
+
+                var title = await _articleScraper.ScrapeHeadlineAsync(articleUrl);
+
+                var subArticle = new SubArticle
+                {
+                    Title = title,
+                    SourceUrl = articleUrl,
+                    PublisherId = publisherId,
+                    ArticleId = article.Id,
+                };
+
+                subArticles.Add(subArticle);
+            }
+
+            await _unitOfWork.SubArticles.AddRangeAsync(subArticles);
+            await _unitOfWork.Complete();
+
+            return article;
         }
 
 
@@ -60,6 +106,40 @@ namespace Mediagram.Services
             await _unitOfWork.Complete();
 
             return true;
+        }
+
+
+        private (float proGov, float proOpp, float centrist) coverageCalculator(List<int> publisherIds)
+        {
+            var totalSubArticles = publisherIds.Count;
+            if (totalSubArticles == 0) return (0, 0, 0);
+
+            int govCount = 0;
+            int oppCount = 0;
+            int centristCount = 0;
+
+            foreach (var publisherId in publisherIds)
+            {
+                var publisher = _unitOfWork.Publishers.GetAsync(publisherId).Result;
+
+                if (publisher?.Bias == PublisherBias.ProGovernment)
+                    govCount++;
+                else if (publisher?.Bias == PublisherBias.ProOpposition)
+                    oppCount++;
+                else
+                    centristCount++;
+            }
+
+            return (
+                proGov: (float)govCount / totalSubArticles * 100,
+                proOpp: (float)oppCount / totalSubArticles * 100,
+                centrist: (float)centristCount / totalSubArticles * 100
+            );
+        }
+
+        private bool IsBlindSpot(float proGov, float proOpp)
+        {
+            return proGov >= 70 || proOpp >= 70;
         }
     }
 }
