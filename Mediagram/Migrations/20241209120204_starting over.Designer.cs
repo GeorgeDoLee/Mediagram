@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mediagram.Migrations
 {
     [DbContext(typeof(MediagramContext))]
-    [Migration("20241208144419_starting over")]
+    [Migration("20241209120204_starting over")]
     partial class startingover
     {
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Mediagram.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("Mediagram.Models.Article", b =>
@@ -54,14 +54,23 @@ namespace Mediagram.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<float>("CentristCoverage")
+                        .HasColumnType("real");
 
                     b.Property<bool>("IsBlindSpot")
                         .HasColumnType("bit");
 
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("ProGovernmentCoverage")
+                        .HasColumnType("real");
+
+                    b.Property<float>("ProOppositionCoverage")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("datetime2");
@@ -100,35 +109,6 @@ namespace Mediagram.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Mediagram.Models.CoveragePercentage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ArticleId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("CentristCoverage")
-                        .HasColumnType("real");
-
-                    b.Property<float>("ProGovernmentCoverage")
-                        .HasColumnType("real");
-
-                    b.Property<float>("ProOppositionCoverage")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId")
-                        .IsUnique()
-                        .HasFilter("[ArticleId] IS NOT NULL");
-
-                    b.ToTable("CoveragePercentages");
-                });
-
             modelBuilder.Entity("Mediagram.Models.Publisher", b =>
                 {
                     b.Property<int>("Id")
@@ -160,10 +140,10 @@ namespace Mediagram.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ArticleId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PublisherId")
+                    b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
                     b.Property<string>("SourceUrl")
@@ -186,53 +166,32 @@ namespace Mediagram.Migrations
             modelBuilder.Entity("Mediagram.Models.Article", b =>
                 {
                     b.HasOne("Mediagram.Models.Category", "Category")
-                        .WithMany("Articles")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Mediagram.Models.CoveragePercentage", b =>
-                {
-                    b.HasOne("Mediagram.Models.Article", "Article")
-                        .WithOne("CoveragePercentage")
-                        .HasForeignKey("Mediagram.Models.CoveragePercentage", "ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Article");
-                });
-
             modelBuilder.Entity("Mediagram.Models.SubArticle", b =>
                 {
-                    b.HasOne("Mediagram.Models.Article", "Article")
+                    b.HasOne("Mediagram.Models.Article", null)
                         .WithMany("SubArticles")
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Mediagram.Models.Publisher", "Publisher")
-                        .WithMany("SubArticles")
+                        .WithMany()
                         .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Article");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("Mediagram.Models.Article", b =>
-                {
-                    b.Navigation("CoveragePercentage");
-
-                    b.Navigation("SubArticles");
-                });
-
-            modelBuilder.Entity("Mediagram.Models.Category", b =>
-                {
-                    b.Navigation("Articles");
-                });
-
-            modelBuilder.Entity("Mediagram.Models.Publisher", b =>
                 {
                     b.Navigation("SubArticles");
                 });

@@ -12,7 +12,7 @@ namespace Mediagram.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admins",
+                name: "Admin",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -22,7 +22,7 @@ namespace Mediagram.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admins", x => x.Id);
+                    table.PrimaryKey("PK_Admin", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,7 +65,10 @@ namespace Mediagram.Migrations
                     PublishedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrendingScore = table.Column<int>(type: "int", nullable: false),
                     IsBlindSpot = table.Column<bool>(type: "bit", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    ProGovernmentCoverage = table.Column<float>(type: "real", nullable: false),
+                    ProOppositionCoverage = table.Column<float>(type: "real", nullable: false),
+                    CentristCoverage = table.Column<float>(type: "real", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,28 +77,6 @@ namespace Mediagram.Migrations
                         name: "FK_Articles_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CoveragePercentages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProGovernmentCoverage = table.Column<float>(type: "real", nullable: false),
-                    ProOppositionCoverage = table.Column<float>(type: "real", nullable: false),
-                    CentristCoverage = table.Column<float>(type: "real", nullable: false),
-                    ArticleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CoveragePercentages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CoveragePercentages_Articles_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -108,8 +89,8 @@ namespace Mediagram.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SourceUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ArticleId = table.Column<int>(type: "int", nullable: true),
-                    PublisherId = table.Column<int>(type: "int", nullable: true)
+                    ArticleId = table.Column<int>(type: "int", nullable: false),
+                    PublisherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -134,13 +115,6 @@ namespace Mediagram.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CoveragePercentages_ArticleId",
-                table: "CoveragePercentages",
-                column: "ArticleId",
-                unique: true,
-                filter: "[ArticleId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SubArticles_ArticleId",
                 table: "SubArticles",
                 column: "ArticleId");
@@ -155,10 +129,7 @@ namespace Mediagram.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Admins");
-
-            migrationBuilder.DropTable(
-                name: "CoveragePercentages");
+                name: "Admin");
 
             migrationBuilder.DropTable(
                 name: "SubArticles");
