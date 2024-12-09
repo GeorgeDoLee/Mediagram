@@ -97,6 +97,11 @@ namespace Mediagram.Services
                 return null;
             }
 
+            if(publisher.Logo != null)
+            {
+                var existingLogoDeleted = _fileManager.DeleteImage(publisher.Logo);
+            }
+
             var logoPath = await _fileManager.UploadImageAsync(file);
             publisher.Logo = logoPath;
             await _unitOfWork.Complete();
