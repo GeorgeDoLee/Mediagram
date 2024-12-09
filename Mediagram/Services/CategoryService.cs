@@ -26,6 +26,9 @@ namespace Mediagram.Services
         {
             var category = await _unitOfWork.Categories.GetAsync(id);
 
+            category.TrendingScore++;
+            await _unitOfWork.Complete();
+
             return category;
         }
 

@@ -27,6 +27,10 @@ namespace Mediagram.Services
         {
             var article = await _unitOfWork.Articles.GetAsync(id);
 
+            article.TrendingScore++;
+            article.Category.TrendingScore++;
+            await _unitOfWork.Complete();
+
             return article;
         }
 
