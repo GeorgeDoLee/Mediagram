@@ -18,9 +18,9 @@ namespace Mediagram.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllArticles()
+        public async Task<IActionResult> GetAllArticles(int pageNumber, int pageSize, bool? isBlindSpot, int? categoryId)
         {
-            var articles = await _articleService.GetAllArticlesAsync();
+            var articles = await _articleService.GetAllArticlesAsync(pageNumber, pageSize, isBlindSpot, categoryId);
 
             if (articles == null || !articles.Any())
             {
