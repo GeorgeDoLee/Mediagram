@@ -96,7 +96,7 @@ namespace Mediagram.Controllers
         {
             if (file == null || file.Length == 0)
             {
-                return BadRequest(new ApiResponse(ErrorMessages.InvalidData);
+                return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
             var publisher = await _publisherService.UploadPublisherLogoAsync(id, file);
