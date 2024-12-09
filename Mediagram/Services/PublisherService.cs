@@ -1,5 +1,6 @@
 ﻿using Mediagram.Common;
 using Mediagram.DTOs;
+using Mediagram.FileManagement;
 using Mediagram.Models;
 using Mediagram.Repositories;
 
@@ -8,9 +9,11 @@ namespace Mediagram.Services
     public class PublisherService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PublisherService(IUnitOfWork unitOfWork)
+        private readonly FileManager _fileManager;
+        public PublisherService(IUnitOfWork unitOfWork, FileManager fileManager)
         {
             _unitOfWork = unitOfWork;
+            _fileManager = fileManager;
         }
 
         public async Task<IEnumerable<Publisher>> GetAllPublishersAsync()
@@ -73,10 +76,45 @@ namespace Mediagram.Services
                 return false;
             }
 
+            if(publisher.Logo != null)
+            {
+                var logoDeleted = _fileManager.DeleteImage(publisher.Logo);
+            }
+
             await _unitOfWork.Publishers.RemoveAsync(publisher);
             await _unitOfWork.Complete();
 
             return true;
+        }
+
+
+        public async Task<Publisher> UploadPublisherLogoAsync(int id, IFormFile file)
+        {
+            var publisher = await GetPublisherByIdAsync(id);
+
+            if(publisher == null)
+            {
+                return null;
+            }
+
+            var logoPath = await _fileManager.UploadImageAsync(file);
+            publisher.Logo = logoPath;
+            await _unitOfWork.Complete();
+
+            return publisher;
+        }
+
+
+        public async Task<bool> DeletePublisherLogoAsync(int id)
+        {
+            var publisher = await GetPublisherByIdAsync(id);
+
+            if(publisher != null && publisher.Logo != null)
+            {
+                return _fileManager.DeleteImage(publisher.Logo);
+            }
+
+            return false;
         }
     }
 }
