@@ -99,23 +99,23 @@ namespace Mediagram.Controllers
                 return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
-            var publisher = await _articleService.UploadArticlePhotoAsync(id, file);
+            var article = await _articleService.UploadArticlePhotoAsync(id, file);
 
-            if (publisher == null)
+            if (article == null)
             {
                 return NotFound(new ApiResponse(ErrorMessages.NotFound));
             }
 
-            return Ok(new ApiResponse(true, "Photo uploaded successfully.", publisher));
+            return Ok(new ApiResponse(true, "Photo uploaded successfully.", article));
         }
 
 
         [HttpDelete("delete-photo/{id}")]
         public async Task<IActionResult> DeleteArticlePhoto(int id)
         {
-            var logoDeleted = await _articleService.DeleteArticlePhotoAsync(id);
+            var photoDeleted = await _articleService.DeleteArticlePhotoAsync(id);
 
-            return logoDeleted ?
+            return photoDeleted ?
                 Ok(new ApiResponse(true, "Photo deleted successfully."))
                 :
                 NotFound(new ApiResponse(ErrorMessages.NotFound));
