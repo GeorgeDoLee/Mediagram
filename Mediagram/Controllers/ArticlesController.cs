@@ -99,7 +99,7 @@ namespace Mediagram.Controllers
                 return BadRequest(new ApiResponse(ErrorMessages.InvalidData));
             }
 
-            var publisher = await _articleService.UploadPublisherLogoAsync(id, file);
+            var publisher = await _articleService.UploadArticlePhotoAsync(id, file);
 
             if (publisher == null)
             {
@@ -113,7 +113,7 @@ namespace Mediagram.Controllers
         [HttpDelete("delete-photo/{id}")]
         public async Task<IActionResult> DeleteArticlePhoto(int id)
         {
-            var logoDeleted = await _articleService.DeletePublisherLogoAsync(id);
+            var logoDeleted = await _articleService.DeleteArticlePhotoAsync(id);
 
             return logoDeleted ?
                 Ok(new ApiResponse(true, "Photo deleted successfully."))
