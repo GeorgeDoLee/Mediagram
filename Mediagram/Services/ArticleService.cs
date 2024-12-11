@@ -1,5 +1,6 @@
 ﻿using Mediagram.Common;
 using Mediagram.DTOs;
+using Mediagram.FileManagement;
 using Mediagram.Models;
 using Mediagram.Models.Enums;
 using Mediagram.Repositories;
@@ -11,9 +12,11 @@ namespace Mediagram.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ArticleScraper _articleScraper = new ArticleScraper();
-        public ArticleService(IUnitOfWork unitOfWork)
+        private readonly FileManager _fileManager;
+        public ArticleService(IUnitOfWork unitOfWork, FileManager fileManager)
         {
             _unitOfWork = unitOfWork;
+            _fileManager = fileManager;
         }
 
         public async Task<IEnumerable<Article>> GetAllArticlesAsync(int pageNumber, int pageSize, bool? isBlindSpot, int? categoryId)
@@ -102,6 +105,11 @@ namespace Mediagram.Services
                 return false;
             }
 
+            if(article.Photo != null)
+            {
+                var articlePhotoDeleted = _fileManager.DeleteImage(article.Photo);
+            }
+
             await _unitOfWork.Articles.RemoveAsync(article);
             await _unitOfWork.Complete();
 
@@ -140,6 +148,44 @@ namespace Mediagram.Services
         private bool IsBlindSpot(float proGov, float proOpp)
         {
             return proGov >= 70 || proOpp >= 70;
+        }
+
+
+        public async Task<Article> UploadArticlePhotoAsync(int id, IFormFile file)
+        {
+            var article = await GetArticleByIdAsync(id);
+
+            if (article == null)
+            {
+                return null;
+            }
+
+            if (article.Photo != null)
+            {
+                var existingLogoDeleted = _fileManager.DeleteImage(article.Photo);
+            }
+
+            var logoPath = await _fileManager.UploadImageAsync(file);
+            article.Photo = logoPath;
+            await _unitOfWork.Complete();
+
+            return article;
+        }
+
+
+        public async Task<bool> DeleteArticlePhotoAsync(int id)
+        {
+            var article = await GetArticleByIdAsync(id);
+
+            if (article != null && article.Photo != null)
+            {
+                _fileManager.DeleteImage(article.Photo);
+                article.Photo = null;
+                await _unitOfWork.Complete();
+                return true;
+            }
+
+            return false;
         }
     }
 }
